@@ -35,6 +35,10 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="mb-3">
+						<img src="<?php echo base_url('fotosDePerfil/'.$aluno->id.'.jpg') ?>" alt="" class="rounded w-50 text-center">
+					</div>
 				</div>
 
 				<div class="modal-footer">

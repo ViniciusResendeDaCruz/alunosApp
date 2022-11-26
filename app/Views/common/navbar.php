@@ -1,9 +1,9 @@
 <div class="navbar navbar-expand-xl navbar-static shadow">
 	<div class="container-fluid">
 		<div class="navbar-brand flex-1">
-			<a href="index.html" class="d-inline-flex align-items-center">
-				<img src="../../../assets/images/logo_icon.svg" alt="">
-				<img src="../../../assets/images/logo_text_dark.svg" class="d-none d-sm-inline-block h-16px invert-dark ms-3" alt="">
+			<a href="<?php echo base_url() ?>" class="d-inline-flex align-items-center">
+				<img src="<?php echo base_url('assets/images/logo.png') ?>" class="h-48px" alt="">
+				<img src="<?php echo base_url('assets/images/logo-text-dark.png') ?>" class="d-none d-sm-inline-block h-16px invert-dark ms-3 h-24px" alt="">
 			</a>
 		</div>
 

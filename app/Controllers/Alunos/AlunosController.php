@@ -66,24 +66,51 @@ class AlunosController extends BaseController
         }
     }
 
-    public function editarAluno(int $id): String
+    public function editarAluno(int $alunoId): String
     {
+        helper('upload');
+        $fotoPerfil = $this->request->getFile('fotoPerfil');
+        $dadosAluno = $this->request->getPost();
+        if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
+            if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
+                return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
+            }
+            // $path = PUBLICPATH.'uploads/fotosDePerfil/'.$alunoId.'.jpg';
+            // if (file_exists($path)) {//se o arquivo já existe(usuário ja tem foto de perfil)
+            //     unlink($path); //deleta arquivo
+            // }
+            //$fotoPerfil->store('fotosDePerfil/', $alunoId.'.jpg'); //Salva a imagem na pasta uploads
+            $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
+        }
+        $this->alunosModel->update($alunoId, $dadosAluno);
+        try {
+            return json_encode([
+                'status' => true,
+                'resposta' => 'Usuário Alterado com Sucesso!'
+            ]);
+        } catch (Exception $e) {
+            return json_encode([
+                'status' => false,
+                'resposta' => $e
+            ]); //retorna falha
+        }
+    }
+    public function cadastrarAluno(){
         helper('upload');
         $fotoPerfil = $this->request->getFile('fotoPerfil');
         try {
             $dadosAluno = $this->request->getPost();
+            $alunoId = $this->alunosModel->insert($dadosAluno); //insere primeiro para receber o id do aluno
             if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
                 if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
                     return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
                 }
-                $nomeArquivo =  random_string(); //gera um nome para o arquivo
-                $fotoPerfil->store('fotosDePerfil/' . $id, $nomeArquivo); //Salva a imagem na pasta uploads
-                $dadosAuno['fotoPerfil'] = $nomeArquivo;
+                $fotoPerfil->store('fotosDePerfil/', $alunoId); //Salva a imagem na pasta uploads
             }
-            $this->alunosModel->update($id, $dadosAluno);
+            $this->alunosModel->update($alunoId,['fotoPerfil'=>$fotoPerfil]);
             return json_encode([
                 'status' => true,
-                'resposta' => 'Usuário Alterado com Sucesso!'
+                'resposta' => 'Usuário criado com Sucesso!'
             ]);
         } catch (Exception $e) {
             return json_encode([
