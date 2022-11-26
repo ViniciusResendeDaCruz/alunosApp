@@ -1,9 +1,6 @@
 var alunosApp = (function () {
 	var params = {
-		year: $("#year").val(),
-		companyCode: $("#companyCode").val(),
-		mainFlow: null,
-		mainItem: null,
+		tabelaAlunos: null,
 	};
 	var selectors = {
 		alunosTabelaContainer: "#alunosTabelaContainer",
@@ -33,10 +30,11 @@ var alunosApp = (function () {
 				url: `${baseUrl}/alunos/alunos-tabela`,
 				dataType: "json",
 			}).done(function (data) {
-				console.log(data.status);
 				if (data.status) {
+                    if (params.tabelaAlunos) {
+                        $(selectors.tabelaAlunos).destroy();
+                    }
 					$(selectors.alunosTabelaContainer).html(data.resposta);
-
 					$(selectors.alunosTabela).dataTable();
 				} else {
 					$.notify(data.resposta, "error");
@@ -75,17 +73,20 @@ var alunosApp = (function () {
 			$.ajax({
 				type: "POST",
 				url: `${baseUrl}/alunos/editar-aluno/${id}`,
+                dataType:'json',
 				processData: false,
 				contentType: false,
 				cache: false,
 				async: false,
 				data: formData,
 			}).done(function (data) {
-                $(selectors.alunosTabelaContainer).html(data.resposta);
+                console.log(data.status);
 				if (data.status) {
-					$.notify('data.resposta', "success");
+					$.notify(data.resposta, "success");
+                    $(selectors.editarAlunoModal).modal('hide')
+                    loader.tabelaAlunos();
 				} else {
-					$.notify('data.resposta', "error");
+					$.notify(data.resposta, "error");
 				}
 			});
 			return false;

@@ -69,30 +69,27 @@ class AlunosController extends BaseController
     public function editarAluno(int $id): String
     {
         helper('upload');
-        $post = $this->request->getPost();
         $fotoPerfil = $this->request->getFile('fotoPerfil');
-        if ($fotoPerfil->isValid()) {
-            if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) {
-                return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
+        try {
+            $dadosAluno = $this->request->getPost();
+            if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
+                if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
+                    return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
+                }
+                $nomeArquivo =  random_string(); //gera um nome para o arquivo
+                $fotoPerfil->store('fotosDePerfil/' . $id, $nomeArquivo); //Salva a imagem na pasta uploads
+                $dadosAuno['fotoPerfil'] = $nomeArquivo;
             }
-            $path = WRITEPATH.'uploads/fotosDePerfil/'.$id.'.jpg';
-            if (file_exists($path)) {
-                unlink($path);
-            }
-            $fotoPerfil->store('fotosDePerfil', $id . '.jpg');
+            $this->alunosModel->update($id, $dadosAluno);
             return json_encode([
-                'status'=>true,
-                'resposta'=>'Usuário Alterado com Sucesso!'
+                'status' => true,
+                'resposta' => 'Usuário Alterado com Sucesso!'
             ]);
-            try {
-            } catch (Exception $e) {
-                return json_encode([
-                    'status' => false,
-                    'resposta' => $e
-                ]); //retorna falha
-            }
-            return '';
+        } catch (Exception $e) {
+            return json_encode([
+                'status' => false,
+                'resposta' => $e
+            ]); //retorna falha
         }
-        return "Nenhum arquivo enviado";
     }
 }
