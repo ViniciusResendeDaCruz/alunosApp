@@ -32,12 +32,14 @@
 							<div class="col-sm-12">
 								<label for="foto_perfil">Foto de perfil</label>
 								<input type="file" class="form-control" accept="image/*" name="fotoPerfil" id="fotoPerfil">
+								<small class="mt-0">*Prefira imagens de proporção 3x4</small>
+								
 							</div>
 						</div>
 					</div>
 
-					<div class="mb-3">
-						<img src="<?php echo base_url('fotosDePerfil/'.$aluno->id.'.jpg') ?>" alt="" class="rounded w-50 text-center">
+					<div class="mb-3 text-center">
+						<img src="<?php echo file_exists('fotosDePerfil\\' . $aluno->id . '.jpg') ? base_url('fotosDePerfil/' . $aluno->id . '.jpg') : base_url('assets/images/avatar.jpg') ?>" alt="" class="rounded w-50 text-center">
 					</div>
 				</div>
 

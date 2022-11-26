@@ -42,6 +42,7 @@ $routes->group('alunos',function($routes){
     $routes->get('alunos-tabela',               'Alunos\AlunosController::alunosTabela');
     $routes->get('editar-aluno-modal/(:num)',   'Alunos\AlunosController::editarAlunoModal/$1');
     $routes->post('editar-aluno/(:num)',        'ALunos\AlunosController::editarAluno/$1');
+    $routes->post('cadastrar-aluno',            'ALunos\AlunosController::cadastrarAluno');
 });
 
 /*

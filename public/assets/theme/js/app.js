@@ -212,6 +212,19 @@ const App = function () {
             });                
         });
     };
+    //toogle dark theme
+    const toogleDarkMode = function () {
+        document.getElementById('darkModeSwitcher').onclick = function () {
+            let html = document.getElementsByTagName('html')[0];
+            if (html.getAttribute('data-color-theme') == 'dark') {
+                html.setAttribute('data-color-theme','light');
+                this.innerHTML = 'Modo Escuro<i class="ph-moon-stars p-1" id="darkModeSwitcherIcon"></i>'
+            }else{
+                html.setAttribute('data-color-theme','dark')
+                this.innerHTML = '<i class="ph-sun p-1" id="darkModeSwitcherIcon"></i>Modo Claro'
+            }
+        }
+    }
 
 
     // Navigations
@@ -600,7 +613,13 @@ const App = function () {
             App.initComponents();
             App.initCardActions();
             App.initDropdowns();
+            App.initDarkModeToggler()
+        },
+        //initialize theme toggler
+        initDarkModeToggler: function () {
+            toogleDarkMode();
         }
+
     };
 }();
 

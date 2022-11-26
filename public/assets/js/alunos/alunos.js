@@ -3,11 +3,14 @@ var alunosApp = (function () {
 		tabelaAlunos: null,
 	};
 	var selectors = {
-		alunosTabelaContainer: "#alunosTabelaContainer",
-		alunosTabela: "#alunosTabela",
-		editarAlunoModal: "#editarAlunoModal",
-		editarAlunoModalContainer: "#editarAlunoModalContainer",
-		editarAlunoForm: "#editarAlunoForm",
+		alunosTabelaContainer:              "#alunosTabelaContainer",
+        alunosTabela:                       "#alunosTabela",
+		editarAlunoModal:                   "#editarAlunoModal",
+		editarAlunoModalContainer:          "#editarAlunoModalContainer",
+		editarAlunoForm:                    "#editarAlunoForm",
+        cadastrarAlunoModal:                "#cadastrarAlunoModal",
+        cadastrarAlunoForm:                 "#cadastrarAlunoForm",
+        cadastrarAlunoFormNome:             "#novoAlunoNome"
 	};
 	var loader = {
 		editarAlunoModal: function (id) {
@@ -47,6 +50,7 @@ var alunosApp = (function () {
 		init: function () {
 			$.extend($.fn.dataTable.defaults, {
 				autoWidth: false,
+                responsive:true,
 				language: {
 					// url:`${baseUrl}/assets/plugins/datatables/pt-br.json`,
 					info: "Mostrando de _START_ até _END_ de _TOTAL_ alunos",
@@ -63,6 +67,9 @@ var alunosApp = (function () {
 					},
 				},
 			});
+            $(selectors.cadastrarAlunoModal).on('shown.bs.modal', function(){
+                $(this).find(selectors.cadastrarAlunoFormNome).focus();
+            });
 			loader.tabelaAlunos();
 		},
 		editarAlunoModal: function (id) {
@@ -91,8 +98,38 @@ var alunosApp = (function () {
 			});
 			return false;
 		},
+        cadastrarAlunoModal: function () {
+            $(selectors.cadastrarAlunoModal).modal('show');
+            
+            
+        },
+        cadastrarAluno: function () {
+            const formData = new FormData($(selectors.cadastrarAlunoForm)[0]);
+			$.ajax({
+				type: "POST",
+				url: `${baseUrl}/alunos/cadastrar-aluno`,
+                dataType:'json',
+				processData: false,
+				contentType: false,
+				cache: false,
+				async: false,
+				data: formData,
+			}).done(function (data) {
+                console.log(data.status);
+				if (data.status) {
+					$.notify(data.resposta, "success");
+                    $(selectors.cadastrarAlunoModal).modal('hide')
+                    $(selectors.cadastrarAlunoForm).trigger("reset");
+                    loader.tabelaAlunos();
+				} else {
+					$.notify(data.resposta, "error");
+				}
+			});
+			return false;
+        }
 	};
 })();
-$(document).ready(function () {
+
+$(function () {
 	alunosApp.init();
 });

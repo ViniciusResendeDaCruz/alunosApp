@@ -15,12 +15,20 @@ class AlunosController extends BaseController
     {
         $this->alunosModel = new AlunosModel();
     }
-
+    /**
+     * Retorna a tela de gerenciamento de alunos
+     *
+     * @return String [HTML]
+     */
     public function alunos(): String
     {
         return view('alunos/home.php');
     }
-
+    /**
+     * Monta e retorna a tabela de alunos
+     *
+     * @return String [JSON]
+     */
     public function alunosTabela(): String
     {
         if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
@@ -31,7 +39,7 @@ class AlunosController extends BaseController
         }
         //Se for uma requisição AJAX
         try {
-            $alunos = $this->alunosModel->findAll(); //busca alunos no banco de dados
+            $alunos = $this->alunosModel->groupBy('nome')->findAll(); //busca alunos no banco de dados já ordenados pelo nome
             return json_encode([
                 'status' => true,
                 'resposta' => view('alunos/tabelas/alunosTabela', ['alunos' => $alunos])
@@ -43,6 +51,13 @@ class AlunosController extends BaseController
             ]); //retorna falha
         }
     }
+
+    /**
+     * Monta e retorna o modal para edição de aluno
+     *
+     * @param int $id [id do aluno a ser alterado]
+     * @return String [JSON]
+     */
     public function editarAlunoModal(int $id): String
     {
         if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
@@ -65,25 +80,32 @@ class AlunosController extends BaseController
             ]); //retorna falha
         }
     }
-
+    /**
+     * Edita os dados do aluno no banco de dados
+     *
+     * @param integer $id [id do aluno a ser alterado]
+     * @return String [JSON]
+     */
     public function editarAluno(int $alunoId): String
     {
-        helper('upload');
-        $fotoPerfil = $this->request->getFile('fotoPerfil');
-        $dadosAluno = $this->request->getPost();
-        if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
-            if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
-                return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
-            }
-            // $path = PUBLICPATH.'uploads/fotosDePerfil/'.$alunoId.'.jpg';
-            // if (file_exists($path)) {//se o arquivo já existe(usuário ja tem foto de perfil)
-            //     unlink($path); //deleta arquivo
-            // }
-            //$fotoPerfil->store('fotosDePerfil/', $alunoId.'.jpg'); //Salva a imagem na pasta uploads
-            $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
+        if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
+            return json_encode([
+                'status' => false,
+                'resposta' => "Metodo não permitido!"
+            ]);
         }
-        $this->alunosModel->update($alunoId, $dadosAluno);
+        //Se for uma requisição AJAX
         try {
+            helper('upload');
+            $fotoPerfil = $this->request->getFile('fotoPerfil');
+            $dadosAluno = $this->request->getPost();
+            if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
+                if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
+                    return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
+                }
+                $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
+            }
+            $this->alunosModel->update($alunoId, $dadosAluno); //Realiza alteração no banco de dados
             return json_encode([
                 'status' => true,
                 'resposta' => 'Usuário Alterado com Sucesso!'
@@ -95,22 +117,36 @@ class AlunosController extends BaseController
             ]); //retorna falha
         }
     }
-    public function cadastrarAluno(){
+
+    /**
+     * Cadastra um novo aluno no banco de dados
+     *
+     * @return String [JSON]
+     */
+    public function cadastrarAluno() : String
+    {
+        if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
+            return json_encode([
+                'status' => false,
+                'resposta' => "Metodo não permitido!"
+            ]);
+        }
+        //Se for uma requisição AJAX
         helper('upload');
         $fotoPerfil = $this->request->getFile('fotoPerfil');
-        try {
-            $dadosAluno = $this->request->getPost();
-            $alunoId = $this->alunosModel->insert($dadosAluno); //insere primeiro para receber o id do aluno
-            if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
-                if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
-                    return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
-                }
-                $fotoPerfil->store('fotosDePerfil/', $alunoId); //Salva a imagem na pasta uploads
+        $dadosAluno = $this->request->getPost();
+
+        $alunoId = $this->alunosModel->insert($dadosAluno); //realiza inserção no banco de dados
+        if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
+            if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
+                return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
             }
-            $this->alunosModel->update($alunoId,['fotoPerfil'=>$fotoPerfil]);
+            $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
+        }
+        try {
             return json_encode([
                 'status' => true,
-                'resposta' => 'Usuário criado com Sucesso!'
+                'resposta' => 'Usuário Cadastrado com Sucesso!'
             ]);
         } catch (Exception $e) {
             return json_encode([

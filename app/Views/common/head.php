@@ -21,8 +21,11 @@
 <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/app.css') ?>">
 <script src="<?php echo base_url('assets/theme/js/app.js') ?>"></script>
 
+
+
 <script>
-	const baseUrl = '<?php echo base_url() ?>'; //Cria a constante com o URL do servidor para ser usada em todo arquivo javascript
+	const baseUrl = '<?php echo base_url() ?>'; //Cria a constante com o URL do servidor para ser usada em todos os arquivos javascript
 </script>
 
+<link rel="icon" type="image/x-icon" href="<?php echo base_url('assets/images/favicon.ico') ?>">
 <title>Alunos App</title>
