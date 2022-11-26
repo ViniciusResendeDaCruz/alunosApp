@@ -17,7 +17,7 @@ if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('AlunosController');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -35,7 +35,14 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+
+$routes->get('/',                   'Home::index');
+$routes->group('alunos',function($routes){
+    $routes->get('/',                           'Alunos\AlunosController::alunos');
+    $routes->get('alunos-tabela',               'Alunos\AlunosController::alunosTabela');
+    $routes->get('editar-aluno-modal/(:num)',   'Alunos\AlunosController::editarAlunoModal/$1');
+    $routes->post('editar-aluno/(:num)',        'ALunos\AlunosController::editarAluno/$1');
+});
 
 /*
  * --------------------------------------------------------------------

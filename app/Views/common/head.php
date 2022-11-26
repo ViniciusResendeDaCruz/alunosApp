@@ -10,14 +10,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="<?php echo base_url('asets/plugins/jquery/jquery.js') ?>"></script>
+<script src="<?php echo base_url('assets/plugins/jquery/jquery.js') ?>"></script>
 
-<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/css/bootstrap.min.css') ?>">
+<!-- <link rel="stylesheet" href="<?php //echo base_url('assets/plugins/bootstrap/css/bootstrap.min.css') ?>"> -->
 <script src="<?php echo base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 
+<link href="<?php echo base_url('assets/theme/fonts/inter.css') ?>" rel="stylesheet" type="text/css">
+<link href="<?php echo base_url('assets/theme/icons/phosphor/styles.min.css') ?>" rel="stylesheet" type="text/css">
+<link  href="<?php echo base_url('assets/plugins/font-awesome-5/css/all.min.css') ?>" rel="stylesheet" >
+<link rel="stylesheet" href="<?php echo base_url('assets/theme/css/app.css') ?>">
+<script src="<?php echo base_url('assets/theme/js/app.js') ?>"></script>
 
 <script>
-	const BASEURL = '<?php echo base_url() ?>'; //Cria a constante com o URL do servidor para ser usada em todo arquivo javascript
+	const baseUrl = '<?php echo base_url() ?>'; //Cria a constante com o URL do servidor para ser usada em todo arquivo javascript
 </script>
 
 <title>Alunos App</title>
