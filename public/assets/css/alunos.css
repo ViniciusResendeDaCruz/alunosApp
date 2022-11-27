@@ -1,3 +1,29 @@
 .img-pill-cover{
 	object-fit:cover;
 }
+
+.btn-icon {
+    --btn-color: var(--body-color);
+	--btn-hover-color: var(--gray-200)
+    --btn-hover-bg: transparent;
+    --btn-hover-border-color: var(--gray-500);
+    --btn-focus-shadow-rgb: 207,207,209;
+    --btn-active-color: var(--body-color);
+    --btn-active-bg: var(--gray-400);
+    --btn-active-border-color: var(--gray-600);
+    --btn-active-shadow: inset 0 0 0 0 transparent;
+    --btn-disabled-color: var(--body-color);
+    --btn-disabled-bg: var(--gray-200);
+    --btn-disabled-border-color: var(--gray-400);
+	--btn-border-width: 0;
+	transition: all 0.3s ease-in-out;
+}
+  .btn-icon:hover {
+	transform: scale(1.2);
+  }
+.hover-red:hover{
+	color: red;
+}
+.hover-orange:hover{
+	color: orange;
+}

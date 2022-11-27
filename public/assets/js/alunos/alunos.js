@@ -1,6 +1,7 @@
 var alunosApp = (function () {
 	var params = {
 		tabelaAlunos: null,
+		idAlunoARemover: null
 	};
 	var selectors = {
 		alunosTabelaContainer:              "#alunosTabelaContainer",
@@ -10,7 +11,9 @@ var alunosApp = (function () {
 		editarAlunoForm:                    "#editarAlunoForm",
         cadastrarAlunoModal:                "#cadastrarAlunoModal",
         cadastrarAlunoForm:                 "#cadastrarAlunoForm",
-        cadastrarAlunoFormNome:             "#novoAlunoNome"
+        cadastrarAlunoFormNome:             "#novoAlunoNome",
+		removerAlunoModalNome:				"#removerAlunoModalNome",
+		removerAlunoModal:					"#removerAlunoModal"
 	};
 	var loader = {
 		editarAlunoModal: function (id) {
@@ -126,7 +129,32 @@ var alunosApp = (function () {
 				}
 			});
 			return false;
-        }
+        },
+		removerAlunoModal: function (id,nome) {
+			params.idAlunoARemover = id;
+			$(selectors.removerAlunoModalNome).text(nome);
+			$(selectors.removerAlunoModal).modal('show');
+		},
+		removerAluno: function () {
+			if (!params.idAlunoARemover)	 {
+				$.notify("Algo deu errado, recarregue a página e tente novamente!", "error");
+				return;
+			}
+			$.ajax({
+				type: "POST",
+				url: `${baseUrl}/alunos/remover-aluno/${params.idAlunoARemover}`,
+				dataType: "json",
+			}).done(function (data) {
+				if (data.status) {
+					$.notify(data.resposta, "success");
+					$(selectors.removerAlunoModal).modal('hide');
+					loader.tabelaAlunos();
+				} else {
+					$.notify(data.resposta, "error");
+				}
+				params.idAlunoARemover = null;
+			});
+		}
 	};
 })();
 

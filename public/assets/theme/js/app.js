@@ -216,9 +216,10 @@ const App = function () {
     const toogleDarkMode = function () {
         document.getElementById('darkModeSwitcher').onclick = function () {
             let html = document.getElementsByTagName('html')[0];
+            let logo = document.getElementById('logo');
             if (html.getAttribute('data-color-theme') == 'dark') {
                 html.setAttribute('data-color-theme','light');
-                this.innerHTML = 'Modo Escuro<i class="ph-moon-stars p-1" id="darkModeSwitcherIcon"></i>'
+                this.innerHTML = '<i class="ph-moon-stars p-1" id="darkModeSwitcherIcon"></i> Modo Escuro'
             }else{
                 html.setAttribute('data-color-theme','dark')
                 this.innerHTML = '<i class="ph-sun p-1" id="darkModeSwitcherIcon"></i>Modo Claro'

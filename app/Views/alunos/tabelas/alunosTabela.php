@@ -15,7 +15,10 @@
 				<td class="text-center p-0 m-0"> <img class="w-48px h-48px rounded-pill img-pill-cover" src="<?php echo file_exists('fotosDePerfil/' . $aluno->id . '.jpg') ? base_url('fotosDePerfil/' . $aluno->id . '.jpg') : base_url('assets/images/avatar.jpg') ?>"></td>
 				<td><?php echo $aluno->nome ?></td>
 				<td><?php echo $aluno->endereco ?></td>
-				<td class="text-center p-0 w-24px" style="color: var(--body-color);"><button class="btn btn-light" onclick="alunosApp.editarAlunoModal(<?php echo $aluno->id ?>)"><i class="ph-pencil"></i></button></td>
+				<td class="text-center p-0 w-24px" style="color: var(--body-color);">
+				<button class="btn btn-icon pe-1" onclick="alunosApp.editarAlunoModal(<?php echo $aluno->id ?>)"><i class="ph-pencil"></i></button>
+				<button class="btn btn-icon hover-red ps-1" onclick="alunosApp.removerAlunoModal(<?php echo $aluno->id . ',\'' . $aluno->nome . '\'' ?>)"><i class="ph-x"></i></button>
+			</td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>

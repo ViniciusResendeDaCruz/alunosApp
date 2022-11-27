@@ -155,4 +155,26 @@ class AlunosController extends BaseController
             ]); //retorna falha
         }
     }
+
+    /**
+     * Remove um aluno do banco de dados
+     *
+     * @param int $id [id do aluno a ser removido]
+     * @return String [JSON]
+     */
+    public function removerAluno(int $id) : String
+    {
+        try {
+            $this->alunosModel->delete($id);
+            return json_encode([
+                'status'=>true,
+                'resposta'=>"Usuário removido com sucesso!"
+            ]);
+        } catch (Exception $e) {
+            return json_encode([
+                'status'=>false,
+                'resposta'=>$e->getMessage()
+            ]);
+        }
+    }
 }
