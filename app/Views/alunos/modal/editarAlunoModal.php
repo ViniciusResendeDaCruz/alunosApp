@@ -39,7 +39,7 @@
 					</div>
 
 					<div class="mb-3 text-center">
-						<img src="<?php echo file_exists('fotosDePerfil\\' . $aluno->id . '.jpg') ? base_url('fotosDePerfil/' . $aluno->id . '.jpg') : base_url('assets/images/avatar.jpg') ?>" alt="" class="rounded w-50 text-center">
+						<img src="<?php echo file_exists('fotosDePerfil/' . $aluno->id . '.jpg') ? base_url('fotosDePerfil/' . $aluno->id . '.jpg') : base_url('assets/images/avatar.jpg') ?>" alt="" class="rounded w-50 text-center">
 					</div>
 				</div>
 
