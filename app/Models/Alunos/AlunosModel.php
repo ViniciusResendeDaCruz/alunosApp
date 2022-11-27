@@ -3,7 +3,9 @@
 namespace App\Models\Alunos;
 
 use CodeIgniter\Model;
-
+/**
+ * Classe que faz interface com a tabela alunos do banco de dados
+ */
 class AlunosModel extends Model
 {
     protected $DBGroup          = 'default';
@@ -37,5 +39,14 @@ class AlunosModel extends Model
     public function getAlunoById(int $id):object
     {
         return $this->where('id',$id)->first();
+    }
+    /**
+     * Retorna a quantidade de alunos cadastrados no sistema
+     *
+     * @return int [quantidade de alunos]
+     */
+    public function getQtdAlunos() : int
+    {
+        return $this->select('COUNT(*) as qtd')->first()->qtd;
     }
 }

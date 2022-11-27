@@ -1,3 +1,11 @@
+<!--
+    * [Arquivo com a barra de navegação principal]
+    *
+    * @category [HTML - View que retorna a navbar padrão do sistema]
+    * @name     [navbar.php]
+    * @author   [Vinicius Resende <vinicius.resende.cruz@gmail.com>]
+    * @version  [1.0.0] 
+ -->
 <div class="navbar navbar-expand-xl navbar-static shadow">
 	<div class="container-fluid">
 		<div class="navbar-brand flex-1">
@@ -10,13 +18,13 @@
 		<div class="d-flex w-100 w-xl-auto overflow-auto overflow-xl-visible scrollbar-hidden border-top border-top-xl-0 order-1 order-xl-0 pt-2 pt-xl-0 mt-2 mt-xl-0">
 			<ul class="nav gap-1 justify-content-center flex-nowrap flex-xl-wrap mx-auto">
 				<li class="nav-item">
-					<a href="<?php echo base_url() ?>" class="navbar-nav-link rounded <?php echo uri_string() == '/' ?'active':'' ?>">
+					<a href="<?php echo base_url() ?>" class="navbar-nav-link rounded <?php echo uri_string() == '/' ? 'active' : '' ?>">
 						<i class="ph-house me-2"></i>
 						Home
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="<?php echo base_url('alunos') ?>" class="navbar-nav-link rounded <?php echo uri_string() == 'alunos'?'active':'' ?>">
+					<a href="<?php echo base_url('alunos') ?>" class="navbar-nav-link rounded <?php echo uri_string() == 'alunos' ? 'active' : '' ?>">
 						<i class="ph-users-three me-2"></i>
 						Alunos
 					</a>
@@ -86,7 +94,7 @@
 
 			<li class="nav-item">
 				<a href="#" id="darkModeSwitcher" class="navbar-nav-link navbar-nav-linkicon rounded-pill" data-bs-toggle="offcanvas" data-bs-target="#notifications">
-				<i class="ph-sun p-1" id="darkModeSwitcherIcon"></i>Modo Claro
+					<i class="ph-sun p-1" id="darkModeSwitcherIcon"></i>Modo Claro
 				</a>
 			</li>
 

@@ -36,7 +36,7 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
-$routes->get('/',                   'Home::index');
+$routes->get('/',                                       'Home::index');
 $routes->group('alunos',function($routes){
     $routes->get('/',                                   'Alunos\AlunosController::alunos');
     $routes->get('alunos-tabela',                       'Alunos\AlunosController::alunosTabela');
@@ -44,7 +44,7 @@ $routes->group('alunos',function($routes){
     $routes->post('editar-aluno/(:num)',                'Alunos\AlunosController::editarAluno/$1');
     $routes->post('cadastrar-aluno',                    'Alunos\AlunosController::cadastrarAluno');
     $routes->post('remover-aluno/(:num)',               'Alunos\AlunosController::removerAluno/$1');
-    $routes->get('visualizar-aluno-modal/(:num)',      'Alunos\AlunosController::visualizarAlunoModal/$1');
+    $routes->get('visualizar-aluno-modal/(:num)',       'Alunos\AlunosController::visualizarAlunoModal/$1');
 });
 
 /*

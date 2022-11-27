@@ -5,8 +5,10 @@ namespace App\Controllers\Alunos;
 use App\Controllers\BaseController;
 use App\Models\Alunos\AlunosModel;
 use Exception;
-use PHPUnit\Util\Json;
 
+/**
+ * Classe que trata as requisições de e das views relacionados aos alunos
+ */
 class AlunosController extends BaseController
 {
     private $alunosModel;
@@ -22,7 +24,7 @@ class AlunosController extends BaseController
      */
     public function alunos(): String
     {
-        return view('alunos/home.php');
+        return view('alunos/home');
     }
     /**
      * Monta e retorna a tabela de alunos

@@ -7,7 +7,7 @@
 			</div>
 			
 			
-			<div class="modal-body d-flex justify-content-center align-items-center">
+			<div class="modal-body d-flex justify-content-around align-items-center">
 
 						<div class="text-center">
 							<div>
