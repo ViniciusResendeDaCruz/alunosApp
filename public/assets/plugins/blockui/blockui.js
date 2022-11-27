@@ -618,13 +618,13 @@
 		}
 	
 	})();
-
-
+//Default for project
 $.blockUI. defaults.message = '<img src="'+ baseUrl +'/assets/images/loading.svg" />'
 $.blockUI.focusInput = false
 $.blockUI.defaults.overlayCSS.backgroundColor = '#fff'; 
 $.blockUI.defaults.overlayCSS.opacity = '.5'; 
-$.blockUI.defaults.css.backgroundColor = ''
-$.blockUI.defaults.css.border = ''
+$.blockUI.defaults.css.backgroundColor = '';
+$.blockUI.defaults.css.border = '';
+$.blockUI.defaults.baseZ = 2000;
 $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	

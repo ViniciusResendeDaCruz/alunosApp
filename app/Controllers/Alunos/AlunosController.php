@@ -177,4 +177,20 @@ class AlunosController extends BaseController
             ]);
         }
     }
+
+    public function visualizarAlunoModal(int $id) : String
+    {
+        try {
+            $aluno = $this->alunosModel->getAlunoById($id);
+            return json_encode([
+                'status'=>true,
+                'resposta'=>view('alunos/modal/visualizarAlunoModal',['aluno'=>$aluno])
+            ]);
+        } catch (Exception $e) {
+            return json_encode([
+                'status'=>false,
+                'resposta'=>$e->getMessage()
+            ]);
+        }
+    }
 }

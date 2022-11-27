@@ -1,19 +1,21 @@
 var alunosApp = (function () {
 	var params = {
 		tabelaAlunos: null,
-		idAlunoARemover: null
+		idAlunoARemover: null,
 	};
 	var selectors = {
-		alunosTabelaContainer:              "#alunosTabelaContainer",
-        alunosTabela:                       "#alunosTabela",
-		editarAlunoModal:                   "#editarAlunoModal",
-		editarAlunoModalContainer:          "#editarAlunoModalContainer",
-		editarAlunoForm:                    "#editarAlunoForm",
-        cadastrarAlunoModal:                "#cadastrarAlunoModal",
-        cadastrarAlunoForm:                 "#cadastrarAlunoForm",
-        cadastrarAlunoFormNome:             "#novoAlunoNome",
-		removerAlunoModalNome:				"#removerAlunoModalNome",
-		removerAlunoModal:					"#removerAlunoModal"
+		alunosTabelaContainer: "#alunosTabelaContainer",
+		alunosTabela: "#alunosTabela",
+		editarAlunoModal: "#editarAlunoModal",
+		editarAlunoModalContainer: "#editarAlunoModalContainer",
+		editarAlunoForm: "#editarAlunoForm",
+		cadastrarAlunoModal: "#cadastrarAlunoModal",
+		cadastrarAlunoForm: "#cadastrarAlunoForm",
+		cadastrarAlunoFormNome: "#novoAlunoNome",
+		removerAlunoModalNome: "#removerAlunoModalNome",
+		removerAlunoModal: "#removerAlunoModal",
+		visualizarAlunoModalContainer: "#visualizarAlunoModalContainer",
+		visualizarAlunoModal: "#visualizarAlunoModal",
 	};
 	var loader = {
 		editarAlunoModal: function (id) {
@@ -37,11 +39,25 @@ var alunosApp = (function () {
 				dataType: "json",
 			}).done(function (data) {
 				if (data.status) {
-                    if (params.tabelaAlunos) {
-                        $(selectors.tabelaAlunos).destroy();
-                    }
+					if (params.tabelaAlunos) {
+						$(selectors.tabelaAlunos).destroy();
+					}
 					$(selectors.alunosTabelaContainer).html(data.resposta);
 					$(selectors.alunosTabela).dataTable();
+				} else {
+					$.notify(data.resposta, "error");
+				}
+			});
+		},
+		visualizarAlunoModal: function (id) {
+			$.ajax({
+				type: "GET",
+				url: `${baseUrl}/alunos/visualizar-aluno-modal/${id}`,
+				dataType: "json",
+			}).done(function (data) {
+				if (data.status) {
+					$(selectors.visualizarAlunoModalContainer).html(data.resposta)
+					$(selectors.visualizarAlunoModal).modal("show");
 				} else {
 					$.notify(data.resposta, "error");
 				}
@@ -53,7 +69,7 @@ var alunosApp = (function () {
 		init: function () {
 			$.extend($.fn.dataTable.defaults, {
 				autoWidth: false,
-                responsive:true,
+				responsive: true,
 				language: {
 					// url:`${baseUrl}/assets/plugins/datatables/pt-br.json`,
 					info: "Mostrando de _START_ até _END_ de _TOTAL_ alunos",
@@ -70,9 +86,9 @@ var alunosApp = (function () {
 					},
 				},
 			});
-            $(selectors.cadastrarAlunoModal).on('shown.bs.modal', function(){
-                $(this).find(selectors.cadastrarAlunoFormNome).focus();
-            });
+			$(selectors.cadastrarAlunoModal).on("shown.bs.modal", function () {
+				$(this).find(selectors.cadastrarAlunoFormNome).focus();
+			});
 			loader.tabelaAlunos();
 		},
 		editarAlunoModal: function (id) {
@@ -83,61 +99,62 @@ var alunosApp = (function () {
 			$.ajax({
 				type: "POST",
 				url: `${baseUrl}/alunos/editar-aluno/${id}`,
-                dataType:'json',
+				dataType: "json",
 				processData: false,
 				contentType: false,
 				cache: false,
-				async: false,
+				// async: false,
 				data: formData,
 			}).done(function (data) {
-                console.log(data.status);
+				console.log(data.status);
 				if (data.status) {
 					$.notify(data.resposta, "success");
-                    $(selectors.editarAlunoModal).modal('hide')
-                    loader.tabelaAlunos();
+					$(selectors.editarAlunoModal).modal("hide");
+					loader.tabelaAlunos();
 				} else {
 					$.notify(data.resposta, "error");
 				}
 			});
 			return false;
 		},
-        cadastrarAlunoModal: function () {
-            $(selectors.cadastrarAlunoModal).modal('show');
-            
-            
-        },
-        cadastrarAluno: function () {
-            const formData = new FormData($(selectors.cadastrarAlunoForm)[0]);
+		cadastrarAlunoModal: function () {
+			$(selectors.cadastrarAlunoModal).modal("show");
+		},
+		cadastrarAluno: function () {
+			const formData = new FormData($(selectors.cadastrarAlunoForm)[0]);
 			$.ajax({
 				type: "POST",
 				url: `${baseUrl}/alunos/cadastrar-aluno`,
-                dataType:'json',
+				dataType: "json",
 				processData: false,
 				contentType: false,
 				cache: false,
-				async: false,
+				// async: false,
 				data: formData,
 			}).done(function (data) {
-                console.log(data.status);
+				console.log(data.status);
 				if (data.status) {
 					$.notify(data.resposta, "success");
-                    $(selectors.cadastrarAlunoModal).modal('hide')
-                    $(selectors.cadastrarAlunoForm).trigger("reset");
-                    loader.tabelaAlunos();
+					$(selectors.cadastrarAlunoModal).modal("hide");
+					$(selectors.cadastrarAlunoForm).trigger("reset");
+					loader.tabelaAlunos();
 				} else {
 					$.notify(data.resposta, "error");
 				}
 			});
 			return false;
-        },
-		removerAlunoModal: function (id,nome) {
+		},
+		removerAlunoModal: function (id, nome) {
 			params.idAlunoARemover = id;
 			$(selectors.removerAlunoModalNome).text(nome);
-			$(selectors.removerAlunoModal).modal('show');
+			$(selectors.removerAlunoModal).modal("show");
 		},
 		removerAluno: function () {
-			if (!params.idAlunoARemover)	 {
-				$.notify("Algo deu errado, recarregue a página e tente novamente!", "error");
+			if (!params.idAlunoARemover) {
+				$.notify(
+					"Algo deu errado, recarregue a página e tente novamente!",
+					"error"
+				);
 				return;
 			}
 			$.ajax({
@@ -147,14 +164,17 @@ var alunosApp = (function () {
 			}).done(function (data) {
 				if (data.status) {
 					$.notify(data.resposta, "success");
-					$(selectors.removerAlunoModal).modal('hide');
+					$(selectors.removerAlunoModal).modal("hide");
 					loader.tabelaAlunos();
 				} else {
 					$.notify(data.resposta, "error");
 				}
 				params.idAlunoARemover = null;
 			});
-		}
+		},
+		visualizarAlunoModal: function (id) {
+			loader.visualizarAlunoModal(id);
+		},
 	};
 })();
 

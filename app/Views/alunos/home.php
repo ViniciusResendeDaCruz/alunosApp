@@ -85,6 +85,10 @@
 </div>
 <!-- /Modal remover Aluno -->
 
+<!-- Modal visualizar Aluno -->
+<div id="visualizarAlunoModalContainer"></div>
+<!-- /Modal visualizar Aluno -->
+
 <!-- Modal editar Aluno -->
 <div id="editarAlunoModalContainer"></div>
 <!-- /Modal editar Aluno -->
