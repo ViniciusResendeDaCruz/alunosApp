@@ -71,6 +71,12 @@ var alunosApp = (function () {
 			$.extend($.fn.dataTable.defaults, {
 				autoWidth: false,
 				responsive: true,
+				order: [],
+				columnDefs: [ {
+					targets  : 'no-sort',
+					orderable: false,
+				}],
+				
 				language: {
 					// url:`${baseUrl}/assets/plugins/datatables/pt-br.json`,
 					info: "Mostrando de _START_ até _END_ de _TOTAL_ alunos",
