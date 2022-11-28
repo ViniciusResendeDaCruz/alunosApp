@@ -37,6 +37,7 @@ var alunosApp = (function () {
 				type: "GET",
 				url: `${baseUrl}/alunos/alunos-tabela`,
 				dataType: "json",
+				cache:false
 			}).done(function (data) {
 				if (data.status) {
 					if (params.tabelaAlunos) {

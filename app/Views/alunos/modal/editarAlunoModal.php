@@ -1,3 +1,4 @@
+<meta http-equiv="cache-control" content="no-cache" />
  <div id="editarAlunoModal" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
