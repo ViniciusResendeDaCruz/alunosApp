@@ -102,7 +102,7 @@ class AlunosController extends BaseController
             $fotoPerfil = $this->request->getFile('fotoPerfil');
             $dadosAluno = $this->request->getPost();
             if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
-                if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
+                if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifica tipo de arquivo
                     return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
                 }
                 $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
@@ -166,11 +166,49 @@ class AlunosController extends BaseController
      */
     public function removerAluno(int $id) : String
     {
-        try {
-            $this->alunosModel->delete($id);
+        if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
             return json_encode([
+                'status' => false,
+                'resposta' => "Metodo não permitido!"
+            ]);
+        }
+        //Se for uma requisição AJAX
+        try {
+            if (file_exists('fotosDePerfil/'.$id .'.jpg')) { //Se o aluno tiver foto de perfil
+                unlink('fotosDePerfil/'.$id .'.jpg'); //Removo foto de perfil do sistema
+            }
+            $this->alunosModel->delete($id); //Realiza a remoção no banco de dados
+            return json_encode([ 
                 'status'=>true,
                 'resposta'=>"Usuário removido com sucesso!"
+            ]);//retorna sucesso
+        } catch (Exception $e) {
+            return json_encode([ 
+                'status'=>false,
+                'resposta'=>$e->getMessage()
+            ]);//retorna falha
+        }
+    }
+    /**
+     * Retorna o modal de visualização de aluno
+     *
+     * @param int $id [id do aluno a ser visualizado]
+     * @return String [JSON]
+     */
+    public function visualizarAlunoModal(int $id) : String
+    {
+        if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
+            return json_encode([
+                'status' => false,
+                'resposta' => "Metodo não permitido!"
+            ]);
+        }
+        //Se for uma requisição AJAX
+        try {
+            $aluno = $this->alunosModel->getAlunoById($id);
+            return json_encode([
+                'status'=>true,
+                'resposta'=>view('alunos/modal/visualizarAlunoModal',['aluno'=>$aluno])
             ]);
         } catch (Exception $e) {
             return json_encode([
@@ -179,14 +217,19 @@ class AlunosController extends BaseController
             ]);
         }
     }
-
-    public function visualizarAlunoModal(int $id) : String
+    /**
+     * Remove a foto de perfil de um aluno do sistema
+     *
+     * @param int $id [id do aluno a remover sua foto de perfil do sistema]
+     * @return String [JSON]
+     */
+    public function removerFotoDePerfilAluno(int $id):String
     {
         try {
-            $aluno = $this->alunosModel->getAlunoById($id);
+            unlink('fotosDePerfil/'.$id.'.jpg');
             return json_encode([
                 'status'=>true,
-                'resposta'=>view('alunos/modal/visualizarAlunoModal',['aluno'=>$aluno])
+                'resposta'=>'Foto de perfil removida com sucesso'
             ]);
         } catch (Exception $e) {
             return json_encode([

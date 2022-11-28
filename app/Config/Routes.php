@@ -45,6 +45,7 @@ $routes->group('alunos',function($routes){
     $routes->post('cadastrar-aluno',                    'Alunos\AlunosController::cadastrarAluno');
     $routes->post('remover-aluno/(:num)',               'Alunos\AlunosController::removerAluno/$1');
     $routes->get('visualizar-aluno-modal/(:num)',       'Alunos\AlunosController::visualizarAlunoModal/$1');
+    $routes->post('remover-foto-de-perfil-aluno/(:num)',       'Alunos\AlunosController::removerFotoDePerfilAluno/$1');
 });
 
 /*

@@ -17,7 +17,6 @@
 
 <link href="<?php echo base_url('assets/theme/fonts/inter.css') ?>" rel="stylesheet" type="text/css">
 <link href="<?php echo base_url('assets/theme/icons/phosphor/styles.min.css') ?>" rel="stylesheet" type="text/css">
-<link  href="<?php echo base_url('assets/plugins/font-awesome-5/css/all.min.css') ?>" rel="stylesheet" >
 <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/app.css') ?>">
 <script src="<?php echo base_url('assets/theme/js/app.js') ?>"></script>
 

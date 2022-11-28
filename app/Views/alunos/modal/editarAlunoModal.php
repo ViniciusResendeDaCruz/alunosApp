@@ -33,13 +33,17 @@
 								<label for="foto_perfil">Foto de perfil</label>
 								<input type="file" class="form-control" accept="image/*" name="fotoPerfil" id="fotoPerfil">
 								<small class="mt-0">*Prefira imagens de proporção 3x4</small>
-								
 							</div>
 						</div>
 					</div>
 
 					<div class="mb-3 text-center">
-						<img src="<?php echo file_exists('fotosDePerfil/' . $aluno->id . '.jpg') ? base_url('fotosDePerfil/' . $aluno->id . '.jpg') : base_url('assets/images/avatar.jpg') ?>" alt="" class="rounded w-50 text-center">
+						<div>
+							<img src="<?php echo file_exists('fotosDePerfil/' . $aluno->id . '.jpg') ? base_url('fotosDePerfil/' . $aluno->id . '.jpg') : base_url('assets/images/avatar.jpg') ?>" alt="" class="rounded w-50 text-center">
+						</div>
+						<?php if(file_exists('fotosDePerfil/' . $aluno->id . '.jpg')): ?>
+							<small><button type="button" onclick="alunosApp.removerFotoDePerfilAluno(<?php echo $aluno->id ?>)" class="btn btn-link text-light">Remover imagem de perfil</button></small>
+						<?php endif ?>
 					</div>
 				</div>
 

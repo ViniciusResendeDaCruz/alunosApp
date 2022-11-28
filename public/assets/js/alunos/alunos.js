@@ -106,7 +106,6 @@ var alunosApp = (function () {
 				// async: false,
 				data: formData,
 			}).done(function (data) {
-				console.log(data.status);
 				if (data.status) {
 					$.notify(data.resposta, "success");
 					$(selectors.editarAlunoModal).modal("hide");
@@ -132,7 +131,6 @@ var alunosApp = (function () {
 				// async: false,
 				data: formData,
 			}).done(function (data) {
-				console.log(data.status);
 				if (data.status) {
 					$.notify(data.resposta, "success");
 					$(selectors.cadastrarAlunoModal).modal("hide");
@@ -175,6 +173,22 @@ var alunosApp = (function () {
 		visualizarAlunoModal: function (id) {
 			loader.visualizarAlunoModal(id);
 		},
+		removerFotoDePerfilAluno: function (id) {
+			$.ajax({
+				type: "POST",
+				url: `${baseUrl}/alunos/remover-foto-de-perfil-aluno/${id}`,
+				dataType: "json",
+			}).done(function (data) {
+				if (data.status) {
+					$(selectors.editarAlunoModal).modal('hide')
+					loader.editarAlunoModal(id);
+					loader.tabelaAlunos();
+					$.notify(data.resposta, "success");
+				} else {
+					$.notify(data.resposta, "error");
+				}
+			});
+		}
 	};
 })();
 
