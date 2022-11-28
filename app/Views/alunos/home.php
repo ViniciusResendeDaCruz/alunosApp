@@ -16,7 +16,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Adicionar Novo Aluno</h5>
+				<h5 class="modal-title">Adicionar novo aluno</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 
@@ -53,7 +53,7 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-link" data-bs-dismiss="modal">Cancelar</button>
 				<button type="submit" class="btn btn-primary">Cadastrar Aluno</button>
 			</div>
 			<?php echo form_close() ?>
@@ -76,7 +76,7 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-link" data-bs-dismiss="modal">Cancelar</button>
 				<button type="button" onclick="alunosApp.removerAluno()" class="btn btn-primary">Remover Aluno</button>
 			</div>
 
@@ -96,8 +96,8 @@
 <div class="card">
 	<div class="card-header">
 		<div class="d-flex justify-content-between align-items-center">
-			<h4 class="mb-0">Gerenciar Alunos</h4>
-			<button href="#" onclick="alunosApp.cadastrarAlunoModal()" title="Novo Usuário" class="btn btn-light"><i class="ph-plus"></i>Adicionar novo aluno</butt>
+			<h4 class="mb-0">Gerenciar alunos</h4>
+			<button href="#" onclick="alunosApp.cadastrarAlunoModal()" title="Novo Usuário" class="btn btn-light"><i class="ph-plus me-1"></i>Adicionar novo aluno</butt>
 		</div>
 	</div>
 
