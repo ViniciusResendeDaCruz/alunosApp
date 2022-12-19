@@ -29,22 +29,75 @@ var alunosApp = (function () {
 					$(selectors.editarAlunoModal).modal("show");
 				} else {
 					$.notify(data.resposta, "error");
+					 
 				}
 			});
 		},
 		tabelaAlunos: function () {
+			//cria a tabela de alunos por ajax
+			params.tabelaAlunos = $(selectors.alunosTabela).dataTable({
+				// processing: true,
+				serverSide: true,
+				ajax: {
+					url: `${baseUrl}/alunos/alunos-tabela`,
+					type: "GET",
+					dataType: "json",
+
+
+
+				},
+				columns: [
+
+					{data: null, defaultContent:'' , orderable: false, searchable: false},
+					{data: 'nome'},
+					{data: 'endereco'},
+					{data: null, defaultContent:'', orderable: false, searchable: false},
+				],
+				columnDefs: [
+					{
+						targets: 0, // foto do aluno
+						className: "text-center",
+						render: function (data, type, row, meta) {
+							return row.fotoPerfil != '0' ?  // se tiver foto de perfil, mostra a foto
+							`<img src="${baseUrl}/fotosDePerfil/${row.id}.jpg?${row.fotoPerfil}" class="img-fluid rounded-circle" style="width: 50px; height: 50px;">` 
+							: // se não tiver foto de perfil, mostra a foto padrão
+							`<img src="${baseUrl}/assets/images/avatar.jpg" class="img-fluid rounded-circle" style="width: 50px; height: 50px;">`;
+						
+						}
+					},
+					{
+						targets: 3, // ações da tabela 
+						className: "text-center",
+						render: function (data, type, row, meta) {
+							return `
+								<td class="text-center p-0" style="width: 150px;">
+									<button class="btn btn-icon pe-1" onclick="alunosApp.visualizarAlunoModal(${row.id})"><i class="ph-eye"></i></button>
+									<button class="btn btn-icon px-1" onclick="alunosApp.editarAlunoModal(${row.id})"><i class="ph-pencil"></i></button>
+									<button class="btn btn-icon hover-red ps-1" onclick="alunosApp.removerAlunoModal(${row.id},'${row.nome}')"><i class="ph-x"></i></button>
+								</td>
+							`;
+						}
+					}
+				],
+
+			});
+			// $(selectors.alunosTabelaContainer).html(data);
+			return;
+			
 			$.ajax({
 				type: "GET",
 				url: `${baseUrl}/alunos/alunos-tabela`,
-				dataType: "json",
+				// dataType: "json",
 				cache:false
 			}).done(function (data) {
+				$(selectors.alunosTabelaContainer).html(data);
+				return;
+				$(selectors.alunosTabela).dataTable();
 				if (data.status) {
 					if (params.tabelaAlunos) {
 						$(selectors.tabelaAlunos).destroy();
 					}
 					$(selectors.alunosTabelaContainer).html(data.resposta);
-					$(selectors.alunosTabela).dataTable();
 				} else {
 					$.notify(data.resposta, "error");
 				}
@@ -116,7 +169,9 @@ var alunosApp = (function () {
 				if (data.status) {
 					$.notify(data.resposta, "success");
 					$(selectors.editarAlunoModal).modal("hide");
-					loader.tabelaAlunos();
+					// console.log($(selectors.alunosTabela).DataTable());
+					// recarregar a tabela
+					$(selectors.alunosTabela).DataTable().ajax.reload();
 				} else {
 					$.notify(data.resposta, "error");
 				}
@@ -142,7 +197,9 @@ var alunosApp = (function () {
 					$.notify(data.resposta, "success");
 					$(selectors.cadastrarAlunoModal).modal("hide");
 					$(selectors.cadastrarAlunoForm).trigger("reset");
-					loader.tabelaAlunos();
+					//recarrega a tabela de alunos
+					$(selectors.alunosTabela).DataTable().ajax.reload();
+					
 				} else {
 					$.notify(data.resposta, "error");
 				}
@@ -170,7 +227,8 @@ var alunosApp = (function () {
 				if (data.status) {
 					$.notify(data.resposta, "success");
 					$(selectors.removerAlunoModal).modal("hide");
-					loader.tabelaAlunos();
+					//recarrega a tabela de alunos
+					$(selectors.alunosTabela).DataTable().ajax.reload();
 				} else {
 					$.notify(data.resposta, "error");
 				}
@@ -189,7 +247,8 @@ var alunosApp = (function () {
 				if (data.status) {
 					$(selectors.editarAlunoModal).modal('hide')
 					loader.editarAlunoModal(id);
-					loader.tabelaAlunos();
+					//recarrega a tabela de alunos
+					$(selectors.alunosTabela).DataTable().ajax.reload();
 					$.notify(data.resposta, "success");
 				} else {
 					$.notify(data.resposta, "error");

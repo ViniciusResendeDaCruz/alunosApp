@@ -626,5 +626,5 @@ $.blockUI.defaults.overlayCSS.opacity = '.5';
 $.blockUI.defaults.css.backgroundColor = '';
 $.blockUI.defaults.css.border = '';
 $.blockUI.defaults.baseZ = 2000;
-$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+// $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	

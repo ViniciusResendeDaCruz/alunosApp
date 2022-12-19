@@ -104,6 +104,17 @@
 	<div class="card-body">
 		<!-- Tabela de Aluno -->
 		<div id="alunosTabelaContainer"></div>
+		<table class="table datatable-basic table-striped table-hover table-bordered display no-wrap" id="alunosTabela">
+			<thead>
+				<tr>
+					<th class="text-center no-sort">Foto</th>
+					<th>Nome</th>
+					<th>Endereço</th>
+					<th class="text-center no-sort">Ações</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 		<!-- /Tabela de Aluno -->
 	</div>
 </div>

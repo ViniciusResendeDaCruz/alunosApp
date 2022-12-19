@@ -3,6 +3,7 @@
 namespace App\Controllers\Alunos;
 
 use App\Controllers\BaseController;
+use \Hermawan\DataTables\DataTable;
 use App\Models\Alunos\AlunosModel;
 use Exception;
 
@@ -31,7 +32,7 @@ class AlunosController extends BaseController
      *
      * @return String [JSON]
      */
-    public function alunosTabela(): String
+    public function alunosTabela()
     {
         if (!$this->request->isAJAX()) { //Se não for uma requisição AJAX
             return json_encode([
@@ -41,7 +42,11 @@ class AlunosController extends BaseController
         }
         //Se for uma requisição AJAX
         try {
-            $alunos = $this->alunosModel->groupBy('nome')->findAll(); //busca alunos no banco de dados já ordenados pelo nome
+            $alunos = $this->alunosModel->select('id,nome,endereco,fotoPerfil')->where('deletedAt',null); //busca alunos no banco de dados já ordenados pelo nome e sem os deletados
+            // dd($alunos->findAll());
+
+            return DataTable::of($this->alunosModel)->toJson(true);
+            
             return json_encode([
                 'status' => true,
                 'resposta' => view('alunos/tabelas/alunosTabela', ['alunos' => $alunos])
@@ -106,8 +111,9 @@ class AlunosController extends BaseController
                     return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
                 }
                 $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
+                $dadosAluno['fotoPerfil'] = filemtime('fotosDePerfil/' . $alunoId . '.jpg'); //Marca que o aluno tem foto de perfil e salva a data de modificação do arquivo
             }
-            $this->alunosModel->update($alunoId, $dadosAluno); //Realiza alteração no banco de dados
+            $this->alunosModel->update($alunoId, $dadosAluno); //Realiza alteração no banco de dados 
             return json_encode([
                 'status' => true,
                 'resposta' => 'Usuário Alterado com Sucesso!'
@@ -140,10 +146,11 @@ class AlunosController extends BaseController
 
         $alunoId = $this->alunosModel->insert($dadosAluno); //realiza inserção no banco de dados
         if ($fotoPerfil->isValid()) { //Se houve envio de arquivo
-            if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifi tipo de arquivo
+            if ($fotoPerfil->getMimeType() != 'image/jpeg' or $fotoPerfil->hasMoved()) { //Verifica tipo de arquivo
                 return json_encode(['status' => false, 'resposta' => 'Arquivo Inválido']);
             }
             $fotoPerfil->move('fotosDePerfil',$alunoId.'.jpg',true);
+            $this->alunosModel->update($alunoId, ['fotoPerfil' => filemtime('fotosDePerfil/' . $alunoId . '.jpg')]); //Marca que o aluno possui foto de perfil e atualiza a data de modificação 
         }
         try {
             return json_encode([
@@ -227,6 +234,7 @@ class AlunosController extends BaseController
     {
         try {
             unlink('fotosDePerfil/'.$id.'.jpg');
+            $this->alunosModel->update($id,['fotoPerfil'=>null]); //Realiza alteração no banco de dados 
             return json_encode([
                 'status'=>true,
                 'resposta'=>'Foto de perfil removida com sucesso'
